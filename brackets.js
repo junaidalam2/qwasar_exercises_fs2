@@ -1,49 +1,51 @@
 
 
 
-param_1 = ""
-param_1 = "(johndoe)"
 param_1 = "([)]"
 param_1 = "{[(0 + 0)(1 + 1)](3*(-1)){()}}"
+param_1 = ""
+param_1 = "(johndoe)"
 
 
 function brackets(param_1) {
 
-    if(!param_1) return 1
+    param_1 = param_1.replace(/[^()\[\]{}]/g, '');
+    console.log(param_1)
+    const stack = [];
 
-    let roundBracketOpen = 0;
-    let roundBracketOpenBoolean = false;
-    let squareBracketOpen = 0;
-    let squareBracketOpenBoolean = false;
-    let curlyBraket = 0;
-    let curlyBraketBoolean = false;
-
-    for(let i = 0; i < param_1.lenth; i++) {
-
-            switch (param_1[i]) {
-            case "(":
-                roundBracketOpen++
-                roundBracketOpenBoolean = true;
-            case ")":
-                roundBracketOpen--
-            case "[":
-                squareBracketOpen++
-                squareBracketOpenBoolean = false;
-            case "]":
-                squareBracketOpen--
-            case "{":
-                curlyBraket++
-                curlyBraketBoolean = false;
-            case "}":
-                curlyBraket--
-            }
-     
-            if(roundBracketOpen < 0 || squareBracketOpen < 0 || curlyBraket < 0) return 0
-            
+    bracket_object = {
+        '(': ')',
+        '{': '}',
+        '[': ']',
     }
 
-        if(roundBracketOpen > 0 || squareBracketOpen > 0 || curlyBraket > 0) return 0
-        return 1
+    for (const char of param_1) {
+
+        //console.log(char)
+        if(char in bracket_object) {
+            console.log(char, char in bracket_object, bracket_object[char])
+            stack.push(char);
+            console.log(stack)
+            //console.log('stack push', stack.push(char))
+            //console.log(bracket_object[stack.pop()] !== char, stack.pop(), bracket_object[stack.pop()], char)
+        } else {
+
+            const popped_char =stack.pop()
+            console.log(popped_char) 
+            if (bracket_object[popped_char] && bracket_object[popped_char] !== char) {
+                console.log(char)
+                return 0;
+            }
+
+
+        } 
+        
+        
+    }
+    
+    return stack.length === 0 ? 1 : 0;
+
+
 }
 
 
